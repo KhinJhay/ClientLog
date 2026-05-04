@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClientLog — Freelance, Tracked</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <div class="logo">ClientLog</div>
+            <div class="logo-sub">// FREELANCE TRACKER v1.0</div>
+        </div>
+        <div class="nav-center" id="navClock"></div>
+        <div class="nav-right-g">
+            <button class="nav-btn" onclick="openS()">⚙ Settings</button>
+            <a href="https://www.linkedin.com/in/" target="_blank" class="connect-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+                </svg>
+                Connect with Me
+            </a>
+        </div>
+    </nav>
+
+    <div class="dash">
+        <div class="top-row">
+            <div class="sbox s1"><div class="snum" id="stT">0</div><div class="slbl">Total Clients</div></div>
+            <div class="sbox s2"><div class="snum" id="stA">0</div><div class="slbl">Active Projects</div></div>
+            <div class="sbox s3"><div class="snum" id="stO">0</div><div class="slbl">Overdue / At Risk</div></div>
+            <div class="sbox s4"><div class="snum" id="stR">₵0</div><div class="slbl">Revenue Tracked</div></div>
+        </div>
+
+        <div class="mlayout">
+            <div class="sidebar">
+                <div class="sb-title">+ Add Client</div>
+                <div class="fg"><span class="fl">Client Name</span><input class="fi" id="cN" placeholder="Acme Corp"/></div>
+                <div class="fg"><span class="fl">Project</span><input class="fi" id="cP" placeholder="Brand redesign, Website..."/></div>
+                <div class="fg"><span class="fl">Value</span><input class="fi" id="cV" type="number" placeholder="2500"/></div>
+                <div class="fg"><span class="fl">Status</span>
+                    <select class="fsel" id="cSt">
+                        <option value="active">Active</option>
+                        <option value="pending">Pending Payment</option>
+                        <option value="overdue">Overdue</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+                <div class="fg"><span class="fl">Deadline</span><input class="fi" id="cD" type="date"/></div>
+                <div class="fg"><span class="fl">Notes</span><textarea class="fta" id="cNo" placeholder="Contact info, revisions, notes..."></textarea></div>
+                <div class="fg"><span class="fl">Card Color</span>
+                    <div class="crow" id="crow">
+                        <div class="cdot sel" style="background:#ffe500" data-c="#ffe500" onclick="pc(this)"></div>
+                        <div class="cdot" style="background:#00e676" data-c="#00e676" onclick="pc(this)"></div>
+                        <div class="cdot" style="background:#00b4ff" data-c="#00b4ff" onclick="pc(this)"></div>
+                        <div class="cdot" style="background:#ff3b3b" data-c="#ff3b3b" onclick="pc(this)"></div>
+                        <div class="cdot" style="background:#ff8c00" data-c="#ff8c00" onclick="pc(this)"></div>
+                        <div class="cdot" style="background:#e040fb" data-c="#e040fb" onclick="pc(this)"></div>
+                    </div>
+                </div>
+                <button class="add-btn" onclick="addC()">ADD CLIENT →</button>
+            </div>
+
+            <div class="cpanel">
+                <div class="cph">
+                    <div class="cpt">Your Clients</div>
+                    <div class="vtg">
+                        <button class="vtb active" onclick="fv('all',this)">All</button>
+                        <button class="vtb" onclick="fv('active',this)">Active</button>
+                        <button class="vtb" onclick="fv('pending',this)">Pending</button>
+                        <button class="vtb" onclick="fv('overdue',this)">Overdue</button>
+                    </div>
+                </div>
+                <div class="clist" id="clist"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="sov" id="sov" onclick="if(event.target===this)closeS()">
+        <div class="spanel">
+            <div class="sph"><div class="spt">Settings</div><button class="spc" onclick="closeS()">✕</button></div>
+            <div class="spi"><span class="spil">Theme</span><div class="spr"><span class="spt2">Light Mode</span><label class="tgl"><input type="checkbox" onchange="document.documentElement.setAttribute('data-theme',this.checked?'light':'')"><span class="tsl"></span></label></div></div>
+            <div class="spi"><span class="spil">Currency</span>
+                <select class="fsel" onchange="cur=this.value;render()" style="width:100%">
+                    <option value="₵">₵ Cedi</option>
+                    <option value="$">$ Dollar</option>
+                    <option value="£">£ Pound</option>
+                    <option value="€">€ Euro</option>
+                    <option value="₦">₦ Naira</option>
+                </select>
+            </div>
+            <div class="spi"><span class="spil">Show Clock in Nav</span><div class="spr"><span class="spt2">Live clock</span><label class="tgl"><input type="checkbox" id="clkT" checked onchange="clkOn=this.checked"><span class="tsl"></span></label></div></div>
+            <div class="spi"><span class="spil">Compact Cards</span><div class="spr"><span class="spt2">Hide notes</span><label class="tgl"><input type="checkbox" onchange="compact=this.checked;render()"><span class="tsl"></span></label></div></div>
+            <button class="add-btn" style="margin-top:4px" onclick="if(confirm('Clear all?')){clients=[];save();render();updS();closeS();toast2('All data cleared')}">CLEAR ALL DATA</button>
+        </div>
+    </div>
+
+    <div class="toast" id="toastEl"></div>
+
+    <!-- Logic -->
+    <script src="script.js"></script>
+</body>
+</html>
